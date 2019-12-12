@@ -8,39 +8,32 @@
         <form class="add-player-form" action="" method="post" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="first-name">Prenom</label>
-                    <input type="text" class="form-control" name="first_name" id="first-name" value="<%= client.prenom %>" required>
+                    <label for="prenom">Prenom</label>
+                    <input type="text" class="form-control" name="prenom" id="prenom" value="<%= client.prenom %>" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="last-name">Nom</label>
-                    <input type="text" class="form-control" name="last_name" id="last-name" value="<%= client.nom %>" required>
+                    <label for="nom">Nom</label>
+                    <input type="text" class="form-control" name="nom" id="nom" value="<%= client.nom %>" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="username">Adresse</label>
-                    <input type="text" class="form-control" name="username" id="username" value="<%= client.adresse %>" required>
+                    <input type="text" class="form-control" name="adresse" id="adresse" value="<%= client.adresse %>" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="dateBirth">date de naissance</label>
-                    <input type="date" class="form-control" name="dateBirth" id="dateBirth" placeholder="dateBirth" value="<%= client.date_naissance %>">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label for="position">civilité</label>
-                    <select id="position" name="position" class="form-control" required>
+                    <label for="civilite">civilité</label>
+                    <select id="civilite" name="civilite" class="form-control" required>
                         <option selected><%= client.civilite %></option>
                         <option>Mdm</option>
                         <option>M</option>
                     </select>
                 </div>
             </div>
-        </div>
             <button type="submit" class="btn btn-success float-right">Update Player</button>
         </form>
     <% } else { %>

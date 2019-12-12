@@ -29,18 +29,24 @@ global.db = db;
 app.set('port', process.env.port || port); // set express to use this port
 app.set('views', __dirname + '/views'); // set express to look in this folder to render our view
 app.set('view engine', 'ejs'); // configure template engine
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json()); // parse form data client
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 
-const {getHomePage} = require('./routes/index');
-const {deletePlayer, editPlayer, editClientPage} = require('./routes/client');
+// create application/json parser
+var jsonParser = bodyParser.json()
+ 
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+const {getHomePage} = require('./routes/index');
+const {deletePlayer, editClient, editClientPage} = require('./routes/client');
+var urlencodedParser = bodyParser.urlencoded({extended: false});
 // routes for the app
 
-app.get('/', getHomePage) ;
-app.get('/clients', getHomePage);
-app.get('/client/:id', editClientPage);
+app.get('/', urlencodedParser,  getHomePage) ;
+app.get('/clients', urlencodedParser,  getHomePage);
+
+app.get('/client/:id', urlencodedParser, editClientPage);
+app.post('/client/:id', jsonParser, editClient);
 
   
 

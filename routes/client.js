@@ -16,14 +16,17 @@ module.exports = {
             });
         });
     },
-    editPlayer: (req, res) => {
-        let playerId = req.params.id;
-        let first_name = req.body.first_name;
-        let last_name = req.body.last_name;
-        let position = req.body.position;
-        let number = req.body.number;
+    editClient: (req, res) => {
 
-        let query = "UPDATE `players` SET `first_name` = '" + first_name + "', `last_name` = '" + last_name + "', `position` = '" + position + "', `number` = '" + number + "' WHERE `players`.`id` = '" + playerId + "'";
+        console.log(req.body)
+
+        let clientId = req.params.id;
+        let prenom = req.body.prenom;
+        let nom = req.body.nom;
+        let adresse = req.body.adresse;
+
+
+        let query = "UPDATE `client` SET `prenom` = '" + prenom + "', `nom` = '" + nom + "', `adresse` = '" + adresse + "' WHERE `id_client` = '" + clientId + "'";
         db.query(query, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
@@ -31,6 +34,7 @@ module.exports = {
             res.redirect('/');
         });
     },
+
     deletePlayer: (req, res) => {
         let playerId = req.params.id;
         let getImageQuery = 'SELECT image from `players` WHERE id = "' + playerId + '"';
