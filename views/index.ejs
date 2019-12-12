@@ -1,0 +1,29 @@
+<% include partials/header.ejs %>
+    <div class="table-wrapper">
+        <% if (clients.length > 0) {%>
+            <table class="table table-hovered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Prenom</th>
+                        <th scope="col">Nom</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% clients.forEach((client, index) => { %>
+                        <tr>
+                            <th scope="row"><%= client.id_client %></th>
+                            <td><%= client.prenom %></td>
+                            <td><%= client.nom %></td>
+                            <td>
+                                <a href="/client/<%= client.id_client %>"  class="btn btn-sm btn-success">Modifier</a>
+                                <a href="/delete/<%= client.id %>" class="btn btn-sm btn-danger">Supprimer</a>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+</body>
+</html>
