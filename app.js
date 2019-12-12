@@ -12,8 +12,8 @@ const port = 5000;
 const db = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'ceudajaxjs'
+    password: 'root',
+    database: 'Ynov_WS_APIRest'
 });
 
 // connect to database
@@ -34,13 +34,14 @@ app.use(bodyParser.json()); // parse form data client
 app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
 
 const {getHomePage} = require('./routes/index');
-const {deletePlayer, editPlayer, editClientPage} = require('./routes/client');
+const {deleteClient, editPlayer, editClientPage} = require('./routes/client');
 
 // routes for the app
 
 app.get('/', getHomePage) ;
 app.get('/clients', getHomePage);
 app.get('/client/:id', editClientPage);
+app.get('/client/:id', deleteClient);
 
   
 

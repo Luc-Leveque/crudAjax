@@ -31,28 +31,16 @@ module.exports = {
             res.redirect('/');
         });
     },
-    deletePlayer: (req, res) => {
-        let playerId = req.params.id;
-        let getImageQuery = 'SELECT image from `players` WHERE id = "' + playerId + '"';
-        let deleteUserQuery = 'DELETE FROM players WHERE id = "' + playerId + '"';
+    deleteClient: (req, res) => {
+        let clientId = req.params.id;
+        let deleteUserQuery = 'DELETE FROM client WHERE id_client = "' + clientId + '"';
 
-        db.query(getImageQuery, (err, result) => {
+        db.deleteUserQuery(deleteUserQuery, (err, result) => {
             if (err) {
                 return res.status(500).send(err);
             }
-
-            let image = result[0].image;
-
-            fs.unlink(`public/assets/img/${image}`, (err) => {
-                if (err) {
-                    return res.status(500).send(err);
-                }
-                db.query(deleteUserQuery, (err, result) => {
-                    if (err) {
-                        return res.status(500).send(err);
-                    }
-                    res.redirect('/');
-                });
+            res.render('index.ejs', {
+                message : 'Ce client a bien été supprimé'
             });
         });
     }
