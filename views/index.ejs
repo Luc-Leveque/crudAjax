@@ -1,12 +1,5 @@
 <% include partials/header.ejs %>
-    <h1>Quote: <%=quote%> </h1>
-    <form method="post" id="changeQuote">
-        <input type="text" placeholder="Set quote of the day" name="quote"/>
-        <input type="submit" value="Save">
-    </form>
-
     <% if (client) { %>
-        <form class="add-player-form" action="" method="post" enctype="multipart/form-data">
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="prenom">Prenom</label>
@@ -35,13 +28,13 @@
                     </select>
                 </div>
             </div>
-            <input type="button" class="btn btn-success float-right">Update Player</button>
-        </form>
-    <% } else { %>
-        <p class="text-center">Aucun Client Selectionné to add players.</p>
+            <input type="button" data-url="/update/<%= client.id_client %>"  data-type="put"  class="btn btn-sm btn-success" value="Update">
     <% } %>
+        
 
-
+    <nav class="navbar navbar-light bg-light">
+        <span class="navbar-brand mb-0 h1">Listes des Clients</span>
+    </nav>
     <div class="table-wrapper">
         <%  if (clients.length > 0) {%>
             <table class="table table-hovered">
@@ -59,8 +52,8 @@
                             <td><%= client.prenom %></td>
                             <td><%= client.nom %></td>
                             <td>
-                                <input type="button"   data-url="/client/<%= client.id_client %>"  class="btn btn-sm btn-success">Modifier</a>
-                                <input type="button" data-url="/delete/<%= client.id %>" class="btn btn-sm btn-danger">Supprimer</a>
+                                <input type="button" data-url="/client/<%= client.id_client %>"  data-type="get" class="btn btn-sm btn-success" value="Modifier">
+                                <input type="button" data-url="/delete/<%= client.id %>" data-type="delete" class="btn btn-sm btn-danger" value="Delete">
                             </td>
                         </tr>
                     <% }) %>

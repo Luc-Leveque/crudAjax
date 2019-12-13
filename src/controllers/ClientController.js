@@ -19,7 +19,50 @@ exports.MessageController = {
             });
         });
     },
-    
+
+    editClientId: (req, res, next) => {
+
+        let clientId = req.params.id;
+
+        console.log(req.body);
+        
+        let query2 = "SELECT * FROM client"; 
+        let query  = "SELECT * FROM client WHERE id_client = '" + clientId + "' ";
+
+        function client() {
+            return new Promise(function(resolve,reject) {
+                db.query(query, (err, result) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+        }
+
+        function updateClient() {
+            return new Promise(function(resolve,reject) {
+                db.query(query2, (err, result) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+        }
+
+        updateClient().then(function(data){
+            client().then(function(data2){
+               console.log(data)
+               console.log(data2)
+               next();
+            })
+        });
+
+    },
+
     editClientPage: (req, res, next) => {
 
         let clientId = req.params.id;
@@ -35,7 +78,6 @@ exports.MessageController = {
                     } else {
                         resolve(result);
                     }
-    
                 });
             });
         }

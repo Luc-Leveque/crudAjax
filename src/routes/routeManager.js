@@ -10,9 +10,7 @@ const router = (app) => {
     //Route ==> '/messages/:id'
     app.route('/client/:id')
         .get(ClientController.editClientPage)
-        .put((req, res) => {
-            res.send("PUT ok");
-        })
+        .put(ClientController.editClientId)
         .delete((req, res) => {
             res.send("DELETE ok");
         });

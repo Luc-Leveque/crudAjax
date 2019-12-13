@@ -41,11 +41,12 @@
 
         $('input').on('click', function (e) {
             e.preventDefault();
-            var href = $(this).attr('data-url');
+            var url = $(this).attr('data-url');
+            var type = $(this).attr('data-type');
             
             $.ajax({
-                type: 'get',
-                url: href,
+                type: type,
+                url: url,
             })
             .done(function(data){
                 $('body').html(data);
@@ -55,6 +56,4 @@
 </script>
 <body>
 <div class="page-wrapper">
-    <nav class="navbar navbar-light bg-light">
-        <span class="navbar-brand mb-0 h1"><a href="/">Listes des Clients</a></span>
-    </nav>
+    
