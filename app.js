@@ -1,11 +1,16 @@
-const path = require('path');
 const express = require('express');
-const ejs = require('ejs');
 const bodyParser = require('body-parser');
-const app = express();
+const router = require('./src/routes/routeManager');
+
 const mysql = require('mysql');
 
-const port = 5000;
+const app = express();
+const PORT = 5000;
+
+
+app.post(function(req, res, next){
+    next();
+});
 
 // create connection to database
 // the mysql.createConnection function takes in a configuration object which contains host, user, password and the database name.
@@ -25,33 +30,11 @@ db.connect((err) => {
 });
 global.db = db;
 
-// configure middleware
-app.set('port', process.env.port || port); // set express to use this port
-app.set('views', __dirname + '/views'); // set express to look in this folder to render our view
-app.set('view engine', 'ejs'); // configure template engine
-app.use(express.static(path.join(__dirname, 'public'))); // configure express to use public folder
+//MIDDLEWARE
+app.use(express.json());
 
-// create application/json parser
-var jsonParser = bodyParser.json()
- 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+//ROUTES
+router(app);
 
-const {getHomePage} = require('./routes/index');
-const {deletePlayer, editClient, editClientPage} = require('./routes/client');
-var urlencodedParser = bodyParser.urlencoded({extended: false});
-// routes for the app
-
-app.get('/', urlencodedParser,  getHomePage) ;
-app.get('/clients', urlencodedParser,  getHomePage);
-
-app.get('/client/:id', urlencodedParser, editClientPage);
-app.post('/client/:id', jsonParser, editClient);
-
-  
-
-
-// set the app to listen on the port
-app.listen(port, () => {
-    console.log(`Server running on port: ${port}`);
-});
+//Demarrage du serveur
+app.listen(PORT);

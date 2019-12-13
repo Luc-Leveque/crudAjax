@@ -21,6 +21,38 @@
         margin-top: 50px;
     }
 </style>
+<script src="http://code.jquery.com/jquery-3.1.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("form#changeQuote").on('submit', function(e){
+            e.preventDefault();
+            var data = $('input[name=quote]').val();
+            $.ajax({
+                type: 'post',
+                url: '/clients',
+                data: data,
+                dataType: 'text'
+            })
+            .done(function(data){
+                console.log("sucess")
+                $('h1').html(data.quote);
+            });
+        });
+
+        $('input').on('click', function (e) {
+            e.preventDefault();
+            var href = $(this).attr('data-url');
+            
+            $.ajax({
+                type: 'get',
+                url: href,
+            })
+            .done(function(data){
+                $('body').html(data);
+            });
+        });
+    });
+</script>
 <body>
 <div class="page-wrapper">
     <nav class="navbar navbar-light bg-light">

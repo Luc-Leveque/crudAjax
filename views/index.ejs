@@ -1,6 +1,49 @@
 <% include partials/header.ejs %>
+    <h1>Quote: <%=quote%> </h1>
+    <form method="post" id="changeQuote">
+        <input type="text" placeholder="Set quote of the day" name="quote"/>
+        <input type="submit" value="Save">
+    </form>
+
+    <% if (client) { %>
+        <form class="add-player-form" action="" method="post" enctype="multipart/form-data">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="prenom">Prenom</label>
+                    <input type="text" class="form-control" name="prenom" id="prenom" value="<%= client.prenom %>" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="nom">Nom</label>
+                    <input type="text" class="form-control" name="nom" id="nom" value="<%= client.nom %>" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="username">Adresse</label>
+                    <input type="text" class="form-control" name="adresse" id="adresse" value="<%= client.adresse %>" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="civilite">civilité</label>
+                    <select id="civilite" name="civilite" class="form-control" required>
+                        <option selected><%= client.civilite %></option>
+                        <option>M</option>
+                        <option>F</option>
+                    </select>
+                </div>
+            </div>
+            <input type="button" class="btn btn-success float-right">Update Player</button>
+        </form>
+    <% } else { %>
+        <p class="text-center">Aucun Client Selectionné to add players.</p>
+    <% } %>
+
+
     <div class="table-wrapper">
-        <% if (clients.length > 0) {%>
+        <%  if (clients.length > 0) {%>
             <table class="table table-hovered">
                 <thead class="thead-dark">
                     <tr>
@@ -16,8 +59,8 @@
                             <td><%= client.prenom %></td>
                             <td><%= client.nom %></td>
                             <td>
-                                <a href="/client/<%= client.id_client %>"  class="btn btn-sm btn-success">Modifier</a>
-                                <a href="/delete/<%= client.id %>" class="btn btn-sm btn-danger">Supprimer</a>
+                                <input type="button"   data-url="/client/<%= client.id_client %>"  class="btn btn-sm btn-success">Modifier</a>
+                                <input type="button" data-url="/delete/<%= client.id %>" class="btn btn-sm btn-danger">Supprimer</a>
                             </td>
                         </tr>
                     <% }) %>
