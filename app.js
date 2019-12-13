@@ -17,8 +17,8 @@ app.post(function(req, res, next){
 const db = mysql.createConnection ({
     host: 'localhost',
     user: 'root',
-    password: '',
-    database: 'ceudajaxjs'
+    password: 'root',
+    database: 'Ynov_WS_APIRest'
 });
 
 // connect to database
