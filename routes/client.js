@@ -1,4 +1,5 @@
 const fs = require('fs');
+const router = require('router');
 
 module.exports = {
     editClientPage: (req, res) => {
@@ -32,15 +33,26 @@ module.exports = {
         });
     },
     deleteClient: (req, res) => {
-        let clientId = req.params.id;
-        let deleteUserQuery = 'DELETE FROM client WHERE id_client = "' + clientId + '"';
+        // let clientId = req.params.id;
+        // let deleteUserQuery = 'DELETE FROM client WHERE id_client = "' + clientId + '"';
 
-        db.deleteUserQuery(deleteUserQuery, (err, result) => {
-            if (err) {
-                return res.status(500).send(err);
-            }
-            res.render('index.ejs', {
-                message : 'Ce client a bien été supprimé'
+        // db.query(deleteUserQuery, (err, result) => {
+        //     if (err) {
+        //         return res.status(500).send(err);
+        //     }
+        //     res.render('index.ejs', {
+        //         message : 'Ce client a bien été supprimé'
+        //     });
+        // });
+    
+
+        router.deleteClient('/client/:id', (req, res) => {
+            deleteOne({ _id: req.params.id })
+            .then(() => {
+                res.json({ success: true });
+            })
+            .catch(err => {
+                res.status.json({ err: err });
             });
         });
     }

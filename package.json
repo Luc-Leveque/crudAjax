@@ -16,7 +16,8 @@
     "body-parser": "^1.19.0",
     "ejs": "^2.7.4",
     "express": "^4.17.1",
-    "mysql": "^2.17.1"
+    "mysql": "^2.17.1",
+    "router": "^1.3.3"
   },
   "bugs": {
     "url": "https://github.com/Luc-Leveque/crudAjax/issues"

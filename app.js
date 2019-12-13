@@ -42,6 +42,7 @@ app.get('/', getHomePage) ;
 app.get('/clients', getHomePage);
 app.get('/client/:id', editClientPage);
 app.get('/client/:id', deleteClient);
+app.delete('/client/:id', deleteClient);
 
   
 

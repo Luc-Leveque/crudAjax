@@ -18,6 +18,7 @@
                             <td>
                                 <a href="/client/<%= client.id_client %>"  class="btn btn-sm btn-success">Modifier</a>
                                 <a href="/delete/<%= client.id_client %>" class="btn btn-sm btn-danger">Supprimer</a>
+                                <button class="deleteBtn" class="btn btn-sm btn-danger" data-id="<%= client.id_client %>" > XXX </button>
                             </td>
                         </tr>
                     <% }) %>
@@ -27,3 +28,26 @@
     </div>
 </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.deleteBtn').on("click", function(e){
+            e.preventDefault();
+            const id = $(this).attr('data-id');
+
+            $.ajax({
+                url: '/client/' + id,
+                method: 'DELETE',
+                data: { id: id }
+                }).done(function(res) {
+                    if (res.success) {
+                    console.log('id from ajax call is', res);
+                    window.location.reload();
+                } else {
+                    console.log('error...ajax');
+                }});
+        })
+    })
+</script>
+
