@@ -1,6 +1,5 @@
 const ClientController = require('../controllers/ClientController').MessageController;
 
-
 const router = (app) => {
     //Route ==> '/clients'
     app.route('/clients')

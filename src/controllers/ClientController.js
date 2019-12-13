@@ -122,21 +122,5 @@ exports.MessageController = {
                 client : false
             });
         });
-    },
-
-    //ALL MESSAGES
-    allMessages: (req, res) => {
-        Message.find({},(error, data)=>{
-            if (error) {
-                res.send(error);
-            }
-            res.json(data);
-        })
-    },
-    getMessageById: (req, res) => {
-
-    },
-    updateMessage: (req, res) => {
-
     }
 }
