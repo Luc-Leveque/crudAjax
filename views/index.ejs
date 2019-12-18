@@ -9,7 +9,7 @@
             <div class="form-row">
                 <div class="form-group col-md-4">
                     <label for="nom">Nom</label>
-                    <input type="text" class="form-control" name="nom" id="nom" value="<%= client.nom %>" required>
+                    <input type="text" class="form-control" name="nom" id="nom" value="<%= client.nomClient %>" required>
                 </div>
             </div>
             <div class="form-row">
@@ -18,6 +18,12 @@
                     <input type="text" class="form-control" name="adresse" id="adresse" value="<%= client.adresse %>" required>
                 </div>
             </div>
+            <div class="form-row">
+              <div class="form-group col-md-4">
+                  <label for="ville">Ville</label>
+                  <input type="text" class="form-control" name="ville" id="ville" value="<%=  client.nomVille %>" required>
+              </div>
+          </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="civilite">civilité</label>
@@ -36,6 +42,7 @@
         <span class="navbar-brand mb-0 h1">Listes des Clients</span>
     </nav>
     <div class="table-wrapper">
+
         <%  if (clients.length > 0) {%>
             <table class="table table-hovered">
                 <thead class="thead-dark">
