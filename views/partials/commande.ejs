@@ -1,0 +1,27 @@
+<% include header.ejs %>
+<%  if (produits.length > 0) {%>
+    <table class="table table-hovered">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Numero Produit</th>
+                <th scope="col">Libelle Produit</th>
+                <th scope="col">Quantité</th>
+                <th scope="col">Prix Unitaire</th>
+                <th scope="col">Remise</th>
+                <th scope="col">Prix après remise</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% produits.forEach((produit, index) => {%>
+                <tr>
+                    <th scope="row"><%= produit.id_produit %></th>
+                    <td><%= produit.libelle %></td>
+                    <td><%= produit.quantite %></td>
+                    <td><%= produit.prix_unitaire %></td>
+                    <td><%= produit.taux_remise %></td>
+                    <td><%= produit.prix_unitaire*produit.quantite  - produit.taux_remise %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+<% } %>

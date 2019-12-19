@@ -28,6 +28,7 @@
             e.preventDefault();
             var url = $(this).attr('data-url');
             var type = $(this).attr('data-type');
+            var html = $(this).attr('data-html');
 
             
             if( type == 'put') {
@@ -52,7 +53,12 @@
                     url: url,
                 })
                 .done(function(data){
-                    $('body').html(data);
+                    $(html).html(data);
+
+                    if(html == "client"){
+                        $('commande').html('');
+                    }
+
                 });
             }
         });

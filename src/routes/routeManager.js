@@ -4,7 +4,6 @@ const router = (app) => {
     //Route ==> '/clients'
     app.route('/clients')
         .get(ClientController.getHomePage)
-        .post(ClientController.postClient);
 
     //Route ==> '/messages/:id'
     app.route('/client/:id')
@@ -13,6 +12,10 @@ const router = (app) => {
         .delete((req, res) => {
             res.send("DELETE ok");
         });
+
+    //Route ==> '/messages/:id'
+    app.route('/commande/:id')
+        .get(ClientController.getCommandeId)
 
     //Route par defaut
     app.route('/').
