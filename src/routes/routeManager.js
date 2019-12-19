@@ -5,15 +5,12 @@ const router = (app) => {
     app.route('/clients')
         .get(ClientController.getHomePage)
 
-    //Route ==> '/messages/:id'
+
     app.route('/client/:id')
         .get(ClientController.editClientPage)
         .put(ClientController.editClientId)
-        .delete((req, res) => {
-            res.send("DELETE ok");
-        });
+        .delete(ClientController.deleteClientId);
 
-    //Route ==> '/messages/:id'
     app.route('/commande/:id')
         .get(ClientController.getCommandeId)
 

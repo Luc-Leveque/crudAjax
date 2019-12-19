@@ -168,4 +168,56 @@ exports.MessageController = {
             next();
         });
     },
+
+    
+    deleteClientId: (req, res, next) => {
+
+        let clientId = req.params.id;
+
+        let query = "DELETE FROM client WHERE id_client = '" + clientId + "'" ;
+        let query2 = "SELECT * FROM client"; 
+        
+        function deleteClientByIdClient() {
+            return new Promise(function(resolve,reject) {
+                db.query(query, (err, result) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+        }
+
+        function client() {
+            return new Promise(function(resolve,reject) {
+                db.query(query2, (err, result) => {
+                    if (err) {
+                        reject(err)
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+        }
+
+
+        deleteClientByIdClient().then(function(data){ 
+            client().then(function(data2){ 
+                res.render('index.ejs', {
+                    title: false
+                    ,clients: data2,
+                    client : false,
+                    commandes: false,
+                    produits: false,
+                });
+                next();
+            })
+        },
+            function(data){ 
+                res.send(data); 
+            }
+        );
+    },
+
 }

@@ -103,6 +103,21 @@ jQuery(function ()
                 });
 
             }
+            else if(type == 'delete'){
+        
+                    $.ajax({
+                    type: 'delete',
+                    url: url,
+                    })
+                    .done(function(data){
+                        if((data.errno)){
+                            alert('Ce client ne peut pas être supprimé')
+                        }
+                        else{
+                            $('body').html(data);
+                        }
+                    });
+            }
             else {
                 $.ajax({
                     type: type,
