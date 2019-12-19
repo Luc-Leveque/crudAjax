@@ -21,8 +21,8 @@
     <div class="form-row">
       <div class="form-group col-md-4">
           <label for="ville">Ville</label>
-          <input type="text" class="form-control" name="ville" id="ville" <% if (client.clientIdVille) { %> value="<%= client.nomVille %>" <% } else { %> value="" <% } %>>
-      </div>
+          <input class="ff_elem form-control" type="text" name="ville"   id="ville"  <% if (client.clientIdVille) { %> value="<%= client.nomVille %>" <% } else { %> value="" <% } %>/>
+        </div>
     </div>
     <div class="form-row">
         <div class="form-group col-md-6">

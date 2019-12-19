@@ -1,5 +1,6 @@
 
 var Promise = require('promise');
+var vicopo =  require('vicopo');
 
 exports.MessageController = {
 
@@ -25,16 +26,18 @@ exports.MessageController = {
 
         let clientId = req.params.id;
 
-
-        
         let query2 = "SELECT * FROM client"; 
 
-        let query  = " UPDATE client SET nom= '" + req.body.nom + 
-        "', prenom='" + req.body.prenom +
-        "',`adresse`='" + req.body.adresse + 
-        "',`civilite`='" + req.body.civilite + 
-        "'  WHERE  id_client = '" + clientId + "'";
-
+        function insertVille() {
+            return new Promise(function(resolve,reject) {
+                db.query('INSERT INTO ville SET ?', {nom: req.body.ville , code_postal : '00000'}, function(err, result) {
+                    if (err) throw err;
+                  
+                    resolve(result.insertId);
+                  });
+            });
+        }
+        
         function client() {
             return new Promise(function(resolve,reject) {
                 db.query(query2, (err, result) => {
@@ -47,7 +50,13 @@ exports.MessageController = {
             });
         }
 
-        function updateClient() {
+        function updateClient(idVille) {
+            let query  = " UPDATE client SET nom= '" + req.body.nom + 
+            "', prenom='" + req.body.prenom +
+            "',`adresse`='" + req.body.adresse + 
+            "',`civilite`='" + req.body.civilite + 
+            "',`id_ville`='" + idVille + 
+            "'  WHERE  id_client = '" + clientId + "'";
             return new Promise(function(resolve,reject) {
                 db.query(query, (err, result) => {
                     if (err) {
@@ -59,17 +68,20 @@ exports.MessageController = {
             });
         }
 
-        updateClient().then(function(data){
-            client().then(function(data2){
+        insertVille().then(function(insertId){
+            let idVille = insertId;
+            updateClient(idVille).then(function(data){
+                client().then(function(data2){
 
-                res.render('index.ejs', {
-                    title: "List Des Clients"
-                    ,clients: data2,
-                    client : false,
-                    commandes : false,
-                    produits: false,
-                });
-               next();
+                    res.render('index.ejs', {
+                        title: "List Des Clients"
+                        ,clients: data2,
+                        client : false,
+                        commandes : false,
+                        produits: false,
+                    });
+                next();
+                })
             })
         });
 
