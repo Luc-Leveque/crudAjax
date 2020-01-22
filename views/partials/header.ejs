@@ -85,7 +85,8 @@ jQuery(function ()
             var type = $(this).attr('data-type');
             var html = $(this).attr('data-html');
 
-            
+            var token = $('#token').val();
+      
             if( type == 'put') {
                 $.ajax({
                     type: 'put',
@@ -96,7 +97,8 @@ jQuery(function ()
                         "adresse" :  $('#adresse').val(),
                         "civilite" : $('#civilite').val(),
                         "ville"    : $('#ville').val()
-                    }
+                    },
+                    token : token
                 })
                 .done(function(data){
                     $('body').html(data);
@@ -106,8 +108,8 @@ jQuery(function ()
             else if(type == 'delete'){
         
                     $.ajax({
-                    type: 'delete',
-                    url: url,
+                        type: 'delete',
+                        url: url + "/"+token
                     })
                     .done(function(data){
                         if((data.errno)){
@@ -121,7 +123,7 @@ jQuery(function ()
             else {
                 $.ajax({
                     type: type,
-                    url: url,
+                    url: url + "/"+token  ,
                 })
                 .done(function(data){
                     $(html).html(data);

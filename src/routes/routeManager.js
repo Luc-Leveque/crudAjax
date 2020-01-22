@@ -14,12 +14,12 @@ const router = (app) => {
         .get(ClientController.getHomePage)
 
 
-    app.route('/client/:id')
+    app.route('/client/:id/:token')
         .get(ClientController.editClientPage)
         .put(ClientController.editClientId)
         .delete(ClientController.deleteClientId);
 
-    app.route('/commande/:id')
+    app.route('/commande/:id/:token')
         .get(ClientController.getCommandeId)
 
     //Route par defaut

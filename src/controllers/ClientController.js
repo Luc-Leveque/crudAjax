@@ -4,7 +4,6 @@ var bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 var vicopo =  require('vicopo');
 
-const app = (require('express'))();
 const crypt = require('crypto');
 
 //2.
@@ -30,11 +29,11 @@ function authenticateUser(res) {
     res.end('Authorization is needed.');
 }
 
-function verifAuthentication(Request) {
+function authentication(Request) {
     //8. en absence des données d’entification, les réclamer
     if (!request.headers.authorization) {
         authenticateUser(response);
-        return;
+        return ;
     }
     //9.
     let authInfo = request.headers.authorization.replace(/^Digest /, '');
@@ -89,19 +88,70 @@ function parseAuthenticationInfo(authData) {
 
 exports.MessageController = {
 
-    getHomePage: (req, res) => {
+    getHomePage: (request, response) => {
+
+        let digestAuthObject = {};
+
+        //8. en absence des données d’entification, les réclamer
+        if (!request.headers.authorization) {
+            authenticateUser(response);
+            return;
+        }
+        //9.
+        let authInfo = request.headers.authorization.replace(/^Digest /, '');
+        authInfo = parseAuthenticationInfo(authInfo);
+
+        //10. Si le username ne correspond pas, réclamer une authentification
+        if (authInfo.username !== credentials.userName) {
+            authenticateUser(response);
+            return;
+        }
+
+        //11. constitué un objet crypter avec les info d’authentification
+        digestAuthObject.ha1 = cryptoUsingMD5(authInfo.username + ':' + credentials.realm
+        + ':' + credentials.password);
+
+        //12.
+        digestAuthObject.ha2 = cryptoUsingMD5(request.method + ':' + authInfo.uri);
+
+        //13.
+        var resp = cryptoUsingMD5([
+            digestAuthObject.ha1,
+            authInfo.nonce,
+            authInfo.nc,
+            authInfo.cnonce,
+            authInfo.qop,
+            digestAuthObject.ha2
+        ].join(':'));
+
+        digestAuthObject.response = resp;
+
+        //14. comparer les données d’authentification reçus avec
+        //celles récupérées après les ceyptage
+        if (authInfo.response !== digestAuthObject.response) {
+            authenticateUser(response); //Si échec, réclamer une authentification
+            return;
+        }
+
+        const token = jwt.sign(
+            { username: 'Mad' },
+            'RANDOM_TOKEN_SECRET',
+            { expiresIn: '24h' });
+
+
         let query = "SELECT * FROM client"; 
         // execute query
         db.query(query, (err, result) => {
             if (err) {
                 res.redirect('/');
             }
-            res.render('index.ejs', {
+            response.render('index.ejs', {
                 title: "List Des Clients"
                 ,clients: result,
                 client : false,
                 commandes : false,
                 produits: false,
+                token : token
 
             });
         });
@@ -175,7 +225,21 @@ exports.MessageController = {
     editClientPage: (req, res, next) => {
 
         let clientId = req.params.id;
-        
+        let token    = req.params.token;
+
+        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+
+        const username = decodedToken.username;
+
+        let tokenHeader = req.headers.authorization.split(' ')[1];
+        tokenHeader = tokenHeader.split('=')['1']
+        tokenHeader = tokenHeader.split('"')['1']
+
+        if (tokenHeader && tokenHeader != username) {
+            res.status(401).json({
+                error: new Error('Invalid request!')
+            });
+        }
         
         let query2 = "SELECT  id_client, prenom, adresse, civilite, client.nom as nomClient, ville.nom as nomVille , client.id_ville as clientIdVille FROM  client , ville WHERE  ((client.id_ville IS NOT NULL AND client.id_ville = ville.id_ville) OR (client.id_ville is NULL)) AND id_client =  '" + clientId + "' LIMIT 1 ";
         let query3 = "SELECT  numero , date_commande, id_client, id_commande FROM commande where id_client =  '" + clientId + "'";
@@ -258,6 +322,22 @@ exports.MessageController = {
     deleteClientId: (req, res, next) => {
 
         let clientId = req.params.id;
+        let token    = req.params.token;
+
+        const decodedToken = jwt.verify(token, 'RANDOM_TOKEN_SECRET');
+
+        const username = decodedToken.username;
+
+        let tokenHeader = req.headers.authorization.split(' ')[1];
+        tokenHeader = tokenHeader.split('=')['1']
+        tokenHeader = tokenHeader.split('"')['1']
+
+        if (tokenHeader && tokenHeader != username) {
+            res.status(401).json({
+                error: new Error('Invalid request!')
+            });
+        }
+        
 
         let query = "DELETE FROM client WHERE id_client = '" + clientId + "'" ;
         let query2 = "SELECT * FROM client"; 
@@ -295,6 +375,7 @@ exports.MessageController = {
                     client : false,
                     commandes: false,
                     produits: false,
+                    token: token
                 });
                 next();
             })
